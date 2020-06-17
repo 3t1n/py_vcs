@@ -1,6 +1,11 @@
-# py_vcs
+# Versionar arquivos do Power BI com GIT
 
-# Dependências
+Esse diretório possue um compilado de todos arquivos necessários para realizar o versionamento dos arquivos do Power BI com o GIT
+Repositório Original para refência - https://github.com/awaregroup/powerbi-vcs
+
+# Configurações para esteira de Entrega Contínua do Azure Dev Ops
+
+## Dependências
 
 ```python
 python -m pip install --upgrade pip
@@ -12,7 +17,7 @@ pip install requests
 
 ```
 
-# Step de compactação da esteira
+## Step de compactação da esteira
 ```python
 cd ../
 git clone https://github.com/3t1n/py_vcs.git 
@@ -21,6 +26,57 @@ cd py_vcs
 python pbivcs.py -c /home/vsts/work/1/s f1.pbix
 ls -lia
 ```
+Para mais informações sobre esse arquivo acesse esse repositório : https://github.com/3t1n/build_pbi
 
-Repositório Original - https://github.com/awaregroup/powerbi-vcs
+## Step de Build
 
+```python
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jun 16 12:22:46 2020
+
+@author: Tadeu Mansi
+"""
+
+import requests
+from requests_toolbelt import MultipartEncoder
+import json
+
+url = "https://login.microsoftonline.com/common/oauth2/token"
+
+payload = {
+'client_id': 'SEU_CLIENT_ID',
+'grant_type': 'password',
+'resource': 'https://analysis.windows.net/powerbi/api',
+'username': 'SEU_EMAIL',
+'password': 'SUA_SENHA',
+'client_secret': 'SEU_CLIENT_SECRET'
+}
+
+response = requests.request("POST", url, headers={}, data = payload)
+
+json_encode = json.loads(response.text.encode('utf8'))
+accessToken = json_encode['access_token']
+
+groupId = "ID_DO_WORKSPACE"
+reportName = "NOME_DO_REPORT"
+
+url = 'https://api.powerbi.com/v1.0/myorg/groups/' + groupId + '/imports?datasetDisplayName=' + reportName + '&nameConflict=CreateOrOverwrite'
+
+headers = {
+    'Content-Type': 'multipart/form-data',
+    'authorization': 'Bearer ' + accessToken
+}
+
+file_location = 'SEUARQUIVO.pbix'
+
+files = {'value': (None, open(file_location, 'rb'), 'multipart/form-data')}
+mp_encoder = MultipartEncoder(fields=files)
+
+r = requests.post(
+    url=url,
+    data=mp_encoder, 
+    headers=headers
+)
+
+```
