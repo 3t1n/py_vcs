@@ -5,6 +5,8 @@ Repositório Original para refência - https://github.com/awaregroup/powerbi-vcs
 
 ## Configurações para esteira de Entrega Contínua do Azure Dev Ops
 
+Vocês podem utilizar o arquivo YAML ``` config.yml ``` e importar no Azure Dev Ops , ou realizar os procedimentos abaixo:
+
 ## Dependências
 
 ```python
