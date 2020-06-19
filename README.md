@@ -40,8 +40,6 @@ Para mais informações sobre esse arquivo acesse esse repositório : https://gi
 ```python
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jun 16 12:22:46 2020
-
 @author: Tadeu Mansi
 """
 
