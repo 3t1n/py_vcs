@@ -48,10 +48,13 @@ def extract_pbit(pbit_path, outdir, overwrite):
     if os.path.exists(outdir):
         if overwrite:
             shutil.rmtree(outdir)
-        else:
-            raise Exception('Output path "{0}" already exists'.format(outdir))
+        #else:
+         #   raise Exception('Output path "{0}" already exists'.format(outdir))
+    else:
+        os.mkdir(outdir)
 
-    os.mkdir(outdir)
+
+  
 
     order = []
 
